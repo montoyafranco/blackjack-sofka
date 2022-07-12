@@ -128,32 +128,48 @@ if(sumatoria >= 18 && sumatoria <=21 ){console.log("GANASTE")}else{console.log("
 import readline from 'readline';
 
 
+
+
+ronda = 1
+let salirse = 0
 const scanner = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-  scanner.question(" Y - Draw the card...\n N - Finish the game...\n", answer => {
-    switch(answer){
-              case "Y":
-                console.log("Draw the card...")
-                askCard();
-                sumatoria = 0;
-                revisar_puntos()
-                console.log ("Estas son tus cartas " ,elegidas)
-                console.log("Tu puntaje es : " ,sumatoria)
-                if(sumatoria >= 18 && sumatoria <=21 ){console.log("GANASTE")}else{console.log("PERDISTE")}
-
-                break;
 
 
-              case "N":
-                console.log("Ok, game finished.");
-                break;
-              default:
-                console.log("Invalid input. ");
-                break;
+     scanner.question(" Y - Draw the card...\n N - Finish the game...\n", answer => {
+        
+         switch (answer){
+                  case "Y":
+                    console.log("tu ronda es :",ronda)
+                    console.log("Draw the card...")
+                    askCard();
+                    sumatoria = 0;
+                    revisar_puntos()
+                    console.log ("Estas son tus cartas " ,elegidas)
+                    console.log("Tu puntaje es : " ,sumatoria)
+                    
+                    
+                    // if(sumatoria >= 18 && sumatoria <=21 ){console.log("GANASTE")}else{console.log("PERDISTE")}
     
-    }
-    scanner.close();
-});
+                    break;
+    
+    
+                  case "N":
+                    console.log("Ok, game finished.");
+                    console.log("your reward is :" )
+                    salirse = 1
+                    break;
+                  default:
+                    console.log("Invalid input. ");
+                    break;
+        
+        }
+        scanner.close();
+    });
+
+   
+
+  
