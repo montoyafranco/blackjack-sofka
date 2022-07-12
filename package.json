@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/montoyafranco/blackjack-sofka/issues"
   },
-  "homepage": "https://github.com/montoyafranco/blackjack-sofka#readme"
+  "homepage": "https://github.com/montoyafranco/blackjack-sofka#readme",
+  "dependencies": {
+    "inquirer": "^9.0.0"
+  }
 }
