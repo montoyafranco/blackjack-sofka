@@ -4,10 +4,7 @@ import readline from 'readline';
 
 import inquirer from "inquirer";
 
-const scanner = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
+
 
 class Game{
  
@@ -20,12 +17,12 @@ class PLayer{
 }
 
  let player1 = new PLayer("Agus")  
- console.log(player1.name)
+ 
 
 // atributos o variavles
 let elegidas = [] ;
 let sumatoria = 0 ;
-let ronda = 1 ;
+
 let answer ="";
 let bandera_A = 0 ;
 
@@ -45,7 +42,8 @@ function askCard(){
     elegidas.push(Deck[Math.floor(Math.random() * Deck.length)])
     
 }
-
+console.log("-----------------Welcome to blackjack------------")
+console.log("Player: " ,player1.name)
 
 startRound()
 revisar_puntos()
@@ -74,59 +72,77 @@ if(elegidas[i].card == "K" || elegidas[i].card == "Q" || elegidas[i].card == "J"
     
 }}
 
-console.log("Tu puntaje es : " ,sumatoria)
-if(sumatoria >= 18 && sumatoria <=21 ){console.log("GANASTE")}else{console.log("PERDISTE")}
-
-// si todavia te falta para llegar a 21 con Y sacas otra carta con N te retiras y ganas lo acumulado 
-//si ganas se te pregunta con R si queres otra ronda para mas premio 
-
-ronda = 1
-let salirse = 0
 
 
-    scanner.question(" Y - Draw the card...\n N - Finish the game...\n", answer => {
-        
-        switch (answer){
-                 case "Y":
-                   console.log("tu ronda es :",ronda)
-                   console.log("Draw the card...")
-                   askCard();
-                   sumatoria = 0;
-                   revisar_puntos()
-                   console.log ("Estas son tus cartas " ,elegidas)
-                   console.log("Tu puntaje es : " ,sumatoria)  
-                     
-   
-                   break;
-   
-   
-                 case "N":
-                   console.log("Ok, game finished.");
-                   console.log("your reward is :" )
-                   salirse = 1
-                   break;
-                 default:
-                   console.log("Invalid input. ");
-                   break;
-       
-       }
-       scanner.close();
-    })
 
 
+let choice ;           
 
 const inquireMenu = async() =>{
 
     const opt = await inquirer.prompt([{type: "list",
     name: "opcion",
-    message : " Que desea hacer",
-    choices: ["opcion 1", "opcion 2"]
+    message : " Y-Draw card  ------- N - Finish",
+    choices: ["Y", "N"]
 
 }])
-return opt
-}
 
-inquireMenu()
+choice = opt
+}
+let ronda = 1;
+let prize = 1000;
+let manos = 0
+let salirse = 0;
+
+while(salirse !== 1 ){
+    await inquireMenu()
+    
+    
    
 
-  
+    console.log("Soy choice" ,choice)
+   
+   switch (choice.opcion){
+       case "Y":
+         console.log("tu ronda es :",ronda)
+         console.log("Draw the card...")
+         
+         if(elegidas.length < 2){
+            startRound()
+         }else{
+            askCard();
+
+         }
+         sumatoria = 0;
+         revisar_puntos()
+         console.log ("Estas son tus cartas " ,elegidas)
+         console.log("Tu puntaje es : " ,sumatoria)
+         manos = manos + 1
+         if(sumatoria >=18 && sumatoria <= 21){
+            console.log("You win")
+            ronda = ronda + 1
+            manos = 0
+            elegidas = []
+         }
+         if(sumatoria >21){
+            elegidas = []
+            salirse += 1
+            sumatoria = 0
+            console.log("sorry you loose take the reward if there is one")
+            // console.log("your reward is : $", prize * ronda)
+         }
+   
+         break;   
+   
+       case "N":
+         console.log("Ok, game finished.");
+        //  console.log("your reward is : $", prize * ronda )         
+         salirse = salirse + 1
+         break;
+       default:
+         console.log("Invalid input. ");
+         break;
+   
+   }
+}
+console.log("your reward is : $", prize * ronda )
