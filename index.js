@@ -1,148 +1,123 @@
-import Deck from "./deck.js"
-
-import readline from 'readline';
-
+import Deck from "./deck.js";
+// Deck created as an object and imported
 import inquirer from "inquirer";
 
+class PLayer {
+  constructor(name, elegidas, sumatoria, bandera_A) {
+    this.name = name;
+    this.elegidas = elegidas;
+    this.sumatoria = sumatoria;
+    this.bandera_A = bandera_A;
+  }
+  startRound() {
+    const firstCard = Math.floor(Math.random() * Deck.length); //
 
+    this.elegidas.push(Deck[firstCard]);
 
-class Game{
- 
-}
-class PLayer{
-    
-    constructor(name ){        
-        this.name = name        
+    Deck.splice(firstCard, 1);
+
+    const secondCard = Math.floor(Math.random() * Deck.length);
+    this.elegidas.push(Deck[secondCard]);
+    Deck.splice(secondCard, 1);
+  }
+  checkPoints() {
+    for (let i = 0; i < this.elegidas.length; i++) {
+      if (
+        this.elegidas[i].card == "K" ||
+        this.elegidas[i].card == "Q" ||
+        this.elegidas[i].card == "J"
+      ) {
+        this.sumatoria = this.sumatoria + 10;
+      } else if (typeof this.elegidas[i].card == "number") {
+        this.sumatoria = this.sumatoria + this.elegidas[i].card;
+      } else if (this.elegidas[i].card == "A" && this.bandera_A == 0) {
+        this.sumatoria = this.sumatoria + 11;
+        this.bandera_A = this.bandera_A + 1;
+      } else {
+        this.sumatoria = this.sumatoria + 1;
+      }
     }
+  }
+  askCard() {
+    player1.elegidas.push(Deck[Math.floor(Math.random() * Deck.length)]);
+  }
 }
+// --------------------------------  Instanciar objeto ------------------
+//----------------------------------  Default PLayer   --------------------
+let player1 = new PLayer("Agus", [], 0, 0);
+player1.startRound();
+player1.checkPoints();
 
- let player1 = new PLayer("Agus")  
- 
+console.log("-----------------Welcome to blackjack------------");
+console.log("Player: ", player1.name);
 
-// atributos o variavles
-let elegidas = [] ;
-let sumatoria = 0 ;
+console.log("These are your cards:", player1.elegidas);
 
-let answer ="";
-let bandera_A = 0 ;
+console.log("-------------------------------");
+console.log("Your points are :", player1.sumatoria);
 
-function startRound(){
-const i_firstCard=Math.floor(Math.random() * Deck.length); // 
+let choice;
+//--------------------creating menu input-------------------------------
+const inquireMenu = async () => {
+  const opt = await inquirer.prompt([
+    {
+      type: "list",
+      name: "opcion",
+      message:
+        " [ Y ] - Draw Card //Continue to play more rounds + more rewards \n  [ N ] - FINISH and colect reward\n 1 - Each round + $1000",
+      choices: ["Y", "N"],
+    },
+  ]);
 
-elegidas.push(Deck[i_firstCard]) 
-
-Deck.splice(i_firstCard, 1) 
-
-const i_secondCard=Math.floor(Math.random() * Deck.length); 
- elegidas.push(Deck[i_secondCard]) 
- Deck.splice(i_secondCard,1)
-
-}
-function askCard(){
-    elegidas.push(Deck[Math.floor(Math.random() * Deck.length)])
-    
-}
-console.log("-----------------Welcome to blackjack------------")
-console.log("Player: " ,player1.name)
-
-startRound()
-revisar_puntos()
-
-
-console.log ("Estas son tus cartas " ,elegidas)
-
-
- 
-
-// ciclo para corroborar tipo de carta y puntaje
-function revisar_puntos(){
-for (let i = 0 ;i < elegidas.length;i++ ){  
-
-if(elegidas[i].card == "K" || elegidas[i].card == "Q" || elegidas[i].card == "J" ){
-    sumatoria = sumatoria + 10
-}else if (typeof(elegidas[i].card) == "number" ){
-    sumatoria = sumatoria + elegidas[i].card
-
-}else if( elegidas[i].card == "A" && bandera_A == 0)
-{ sumatoria = sumatoria + 11
-    bandera_A = bandera_A + 1
-}else{
-    sumatoria = sumatoria + 1
-}
-    
-}}
-
-
-
-
-
-let choice ;           
-
-const inquireMenu = async() =>{
-
-    const opt = await inquirer.prompt([{type: "list",
-    name: "opcion",
-    message : " Y-Draw card  ------- N - Finish",
-    choices: ["Y", "N"]
-
-}])
-
-choice = opt
-}
-let ronda = 1;
+  choice = opt;
+};
+let round = 0;
 let prize = 1000;
-let manos = 0
-let salirse = 0;
 
-while(salirse !== 1 ){
-    await inquireMenu()
-    
-    
-   
+let out = 0;
+//---------------------------------------Loop Menu --------------------------------
+while (out !== 1) {
+  await inquireMenu();
 
-    console.log("Soy choice" ,choice)
-   
-   switch (choice.opcion){
-       case "Y":
-         console.log("tu ronda es :",ronda)
-         console.log("Draw the card...")
-         
-         if(elegidas.length < 2){
-            startRound()
-         }else{
-            askCard();
+  switch (choice.opcion) {
+    case "Y":
+      console.log("Round :", round);
+      console.log("Draw the card...");
 
-         }
-         sumatoria = 0;
-         revisar_puntos()
-         console.log ("Estas son tus cartas " ,elegidas)
-         console.log("Tu puntaje es : " ,sumatoria)
-         manos = manos + 1
-         if(sumatoria >=18 && sumatoria <= 21){
-            console.log("You win")
-            ronda = ronda + 1
-            manos = 0
-            elegidas = []
-         }
-         if(sumatoria >21){
-            elegidas = []
-            salirse += 1
-            sumatoria = 0
-            console.log("sorry you loose take the reward if there is one")
-            // console.log("your reward is : $", prize * ronda)
-         }
-   
-         break;   
-   
-       case "N":
-         console.log("Ok, game finished.");
-        //  console.log("your reward is : $", prize * ronda )         
-         salirse = salirse + 1
-         break;
-       default:
-         console.log("Invalid input. ");
-         break;
-   
-   }
+      if (player1.elegidas.length < 2) {
+        player1.startRound();
+      } else {
+        player1.askCard();
+      }
+      player1.sumatoria = 0;
+      player1.checkPoints();
+      console.log("These are your cards :  ", player1.elegidas);
+      console.log("Score : ", player1.sumatoria);
+
+      if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {
+        console.log("You win");
+        round = round + 1;
+
+        player1.elegidas = [];
+      }
+      if (player1.sumatoria > 21) {
+        player1.elegidas = [];
+        out += 1;
+        player1.sumatoria = 0;
+        console.log("Game Over // Claim Rewards");
+      }
+
+      break;
+
+    case "N":
+      console.log("Ok, game finished.");
+
+      out = out + 1;
+      break;
+    default:
+      console.log("Invalid input. ");
+      break;
+  }
 }
-console.log("your reward is : $", prize * ronda )
+console.log("----Player :" , player1.name ,"Thanks for playing")
+console.log("----Your reward is : $", prize * round);
