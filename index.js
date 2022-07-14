@@ -1,8 +1,7 @@
-console.log("hola")
+console.log("hola");
 import Deck from "./deck.js";
 // Deck created as an object and imported
 // queryselectors
-
 
 class PLayer {
   constructor(name, elegidas, sumatoria, bandera_A) {
@@ -59,69 +58,81 @@ console.log("-------------------------------");
 console.log("Your points are :", player1.sumatoria);
 
 // let choice;
-//--------------------creating menu input-------------------------------
-// const inquireMenu = async () => {
-//   const opt = await inquirer.prompt([
-//     {
-//       type: "list",
-//       name: "opcion",
-//       message:
-//         " [ Y ] - Draw Card //Continue to play more rounds + more rewards \n  [ N ] - FINISH and colect reward\n 1 - Each round + $1000",
-//       choices: ["Y", "N"],
-//     },
-//   ]);
 
-//   choice = opt;
-// };
 let round = 0;
 let prize = 1000;
 
 let out = 0;
+let choice ; 
+
 //---------------------------------------Loop Menu --------------------------------
-// while (out !== 1) {
-//   await inquireMenu();
+const boton1 = document.getElementById("boton")
+boton1.addEventListener("click", () => {
+  
+    choice = "Y";
+    console.log (choice)
+    play()
+  });
+const boton2 = document.getElementById("boton__N")
+  
+boton2.addEventListener("click", () => {
+    choice = "N";
+    console.log (choice)
+    endGame()
+  });
+if(choice === "Y"){
+  console.log("funciono")
+}else{
+  console.log("NOO funciono")
+}
 
-//   switch (choice.opcion) {
-//     case "Y":
-//       console.log("Round :", round);
-//       console.log("Draw the card...");
+  
+function play(){
+  if(choice == "Y"){
+    console.log("Round :", round);
+    console.log("Draw the card...");
+    if (player1.elegidas.length < 2) {
+      player1.startRound();
+    } else {
+      player1.askCard();
+    }
+    player1.sumatoria = 0;
+    player1.checkPoints();
+    console.log("These are your cards :  ", player1.elegidas);
+    console.log("Score : ", player1.sumatoria);
+    if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {
+      console.log("You win");
+      round = round + 1;
+      player1.elegidas = [];
+    }
+    if (player1.sumatoria > 21) {
+      player1.elegidas = [];
+      out += 1;
+      player1.sumatoria = 0;
+      console.log("Game Over // Claim Rewards");
+    }
+    choice = ""
+  }
+}
+function endGame(){
+  if(choice == "N"){
+    console.log("Ok, game finished.");
+    out = out + 1;
+      choice = "N"
+    alert("Thanks for playing the game will restart")
+  }
+}      
+        
+      
+      
+        
+        
+     
+    
+  
 
-//       if (player1.elegidas.length < 2) {
-//         player1.startRound();
-//       } else {
-//         player1.askCard();
-//       }
-//       player1.sumatoria = 0;
-//       player1.checkPoints();
-//       console.log("These are your cards :  ", player1.elegidas);
-//       console.log("Score : ", player1.sumatoria);
 
-//       if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {
-//         console.log("You win");
-//         round = round + 1;
 
-//         player1.elegidas = [];
-//       }
-//       if (player1.sumatoria > 21) {
-//         player1.elegidas = [];
-//         out += 1;
-//         player1.sumatoria = 0;
-//         console.log("Game Over // Claim Rewards");
-//       }
-
-//       break;
-
-//     case "N":
-//       console.log("Ok, game finished.");
-
-//       out = out + 1;
-//       break;
-//     default:
-//       console.log("Invalid input. ");
-//       break;
-//   }
-// }
-
-document.getElementById("boton").addEventListener('click', player1.startRound(event))
-console.log("----Player :" , player1.name ,"Thanks for playing")
+console.log("----Player :", player1.name, "Thanks for playing");
 console.log("----Your reward is : $", prize * round);
+console.log (" hola")
