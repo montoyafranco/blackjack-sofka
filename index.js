@@ -2,7 +2,8 @@
 import Deck from "./deck.js";
 
 const boxCards = document.getElementById("boxCard");
-
+const boxPrize = document.getElementById("boxPrize");
+const boxPlayer = document.getElementById("playerDefault");
 
 
 
@@ -16,6 +17,8 @@ class PLayer {
   
   print1(){
     boxCards.innerText = ""
+    
+
     this.elegidas.forEach(element => {
       boxCards.innerText += element.card + element.type  
       
@@ -35,6 +38,7 @@ class PLayer {
     this.elegidas.push(Deck[secondCard]);
     Deck.splice(secondCard, 1);
     this.bandera_A = 0
+    player1.print1();
     
       
     
@@ -58,7 +62,8 @@ class PLayer {
 
   }
   askCard() {
-    this.elegidas.push(Deck[Math.floor(Math.random() * Deck.length)]);
+    this.elegidas.push(Deck[Math.floor(Math.random() * Deck.length)])
+    player1.print1();
     
   }
  
@@ -85,22 +90,25 @@ let prize = 1000;
 let out = 0;
 let choice;
 
-//---------------------------------------Loop Menu --------------------------------
+//---------------------------------------Query and Listeners--------------------------------
 
 
 const boton1 = document.getElementById("boton");
 boton1.addEventListener("click", () => {  choice = "Y";  console.log(choice);  play();});
 const boton2 = document.getElementById("boton__N");
-
 boton2.addEventListener("click", () => {  choice = "N";  console.log(choice);  endGame();});
+boxPlayer.innerText = player1.name
+
 
 function play() {
-  // Wanted to be like a interface OOP but don't know how to do it with JS
+  // Wanted to be like an interface OOP but don't know how to do it with JS
+  player1.print1();
   
   if (choice == "Y") {
     console.log("Round :", round);
     console.log("Draw the card...");
     if (player1.sumatoria > 21 ) {
+      
       player1.elegidas = [];
       out += 1;
       player1.sumatoria = 0;
@@ -108,9 +116,10 @@ function play() {
       console.log("----Your reward is : $", prize * round);
       round = 0
       if(round == 3 && out == 1){
+        window.location.reload();
         alert("Game Over")
         
-          window.location.reload();
+          
         }
       }
     }
@@ -119,6 +128,7 @@ function play() {
       player1.startRound();
     } else {
       player1.askCard();
+      
     }
     player1.sumatoria = 0;
     player1.checkPoints();
@@ -126,6 +136,7 @@ function play() {
     console.log("Score : ", player1.sumatoria);
     if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {
       console.log("You win");
+      
       round = round + 1;
       player1.elegidas = [];
       console.log("----Your reward is : $", prize * round);
@@ -134,8 +145,9 @@ function play() {
         window.location.reload();
       }
     }
-    player1.print1();
     
+    boxPrize.innerText = `$ ${prize * round }
+                          More winner rounds accumulate rewards!!"`
     choice = "";
   }
 
@@ -147,6 +159,7 @@ function endGame() {
     console.log("----Your reward is : $", prize * round);
     player1.elegidas = []
     alert("Thanks for playing the game will restart");
+    window.location.reload();
   }
 }
 

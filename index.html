@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>blackJack</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Welcome to blackJack</h1>
-
+      <h1>Welcome to blackJack</h1>
     </header>
     <main>
-        
-        
-        <div class="box__cards" id="boxCard">
-            <p>these are your cards : </p>
+        <h2>Player:</h2>
+        <div id="playerDefault"></div>
+      <h3>These are your cards :</h3>
+      <div class="box__cards" id="boxCard"></div>
+      <h3>This is your current reward:</h3>
+      <div class="box__prize" id="boxPrize"></div>
+      <h3>These are your points:</h3>
+      <div class="score__points"></div>
 
-        </div>
-        <div class="box__prize">
-                <p>this is the reward:</p>
-        </div>
-        <div class="button__Y">
-            <button id="boton">Draw Card / Keep Playing</button>
-
-        </div>
-        <div class="button__N">
-            <button id="boton__N" onclick="">End Game</button>
-
-        </div>
-
-
-
+      <div class="button__Y">
+        <button id="boton">Draw Card / Keep Playing</button>
+      </div>
+      <div class="button__N">
+        <button id="boton__N" onclick="">End Game</button>
+      </div>
     </main>
     <footer>
-        <h2> Franco Agustin Montoya</h2>
+      <h2>Franco Agustin Montoya</h2>
     </footer>
-    
 
     <script type="module" src="index.js"></script>
-</body>
+  </body>
 </html>
