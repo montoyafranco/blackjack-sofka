@@ -4,6 +4,8 @@ import Deck from "./deck.js";
 const boxCards = document.getElementById("boxCard");
 const boxPrize = document.getElementById("boxPrize");
 const boxPlayer = document.getElementById("playerDefault");
+const boxPoints = document.getElementById("boxPoints");
+const boxRound = document.getElementById("boxRound");
 
 
 
@@ -14,31 +16,28 @@ class PLayer {
     this.sumatoria = sumatoria;
     this.bandera_A = bandera_A;
   }
-  
+    //METHODS
   print1(){
-    boxCards.innerText = ""
-    
-
+    boxCards.innerText = "" 
     this.elegidas.forEach(element => {
-      boxCards.innerText += element.card + element.type  
+      boxCards.innerText += element.card + " " + element.type  + " - - " 
       
-    });
-    
+    });    
   }
   play(){};
   endGame(){};      
   startRound() {
     const firstCard = Math.floor(Math.random() * Deck.length); //
-
     this.elegidas.push(Deck[firstCard]);
-
     Deck.splice(firstCard, 1);
 
     const secondCard = Math.floor(Math.random() * Deck.length);
     this.elegidas.push(Deck[secondCard]);
     Deck.splice(secondCard, 1);
+
     this.bandera_A = 0
     player1.print1();
+    
     
       
     
@@ -52,12 +51,12 @@ class PLayer {
         this.sumatoria = this.sumatoria + this.elegidas[i].card;
       } else if ((this.elegidas[i].card == "A" )&& (this.bandera_A == 0)) {
         this.sumatoria = this.sumatoria + 11;
-        this.bandera_A = this.bandera_A + 1;
+        this.bandera_A =  1;
       } else {
         this.sumatoria = this.sumatoria + 1;
       }
     }
-    
+    boxPoints.innerText = this.sumatoria
     
 
   }
@@ -75,94 +74,71 @@ player1.startRound();
 player1.checkPoints();
 player1.print1();
 
-
-console.log("-----------------Welcome to blackjack------------");
-console.log("Player: ", player1.name);
-
-console.log("These are your cards:", player1.elegidas);
-
-console.log("-------------------------------");
-console.log("Your points are :", player1.sumatoria);
-
-
 let round = 0;
 let prize = 1000;
 let out = 0;
 let choice;
-
 //---------------------------------------Query and Listeners--------------------------------
 
-
 const boton1 = document.getElementById("boton");
-boton1.addEventListener("click", () => {  choice = "Y";  console.log(choice);  play();});
+boton1.addEventListener("click", () => {  choice = "Y"; ;  play();});
 const boton2 = document.getElementById("boton__N");
-boton2.addEventListener("click", () => {  choice = "N";  console.log(choice);  endGame();});
+boton2.addEventListener("click", () => {  choice = "N"; ;  endGame();});
 boxPlayer.innerText = player1.name
-
 
 function play() {
   // Wanted to be like an interface OOP but don't know how to do it with JS
   player1.print1();
   
   if (choice == "Y") {
-    console.log("Round :", round);
-    console.log("Draw the card...");
+    
     if (player1.sumatoria > 21 ) {
       
       player1.elegidas = [];
       out += 1;
       player1.sumatoria = 0;
-      console.log("Game Over // Claim Rewards");
-      console.log("----Your reward is : $", prize * round);
+      alert("Sorry You lose")      
       round = 0
       if(round == 3 && out == 1){
         window.location.reload();
-        alert("Game Over")
-        
-          
-        }
+        alert("Game Over") }
       }
-    }
-    
+    }    
     if (player1.elegidas.length < 2) {
       player1.startRound();
     } else {
-      player1.askCard();
-      
+      player1.askCard();      
     }
     player1.sumatoria = 0;
-    player1.checkPoints();
-    console.log("These are your cards :  ", player1.elegidas);
-    console.log("Score : ", player1.sumatoria);
-    if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {
-      console.log("You win");
+    player1.checkPoints();    
+    if (player1.sumatoria >= 18 && player1.sumatoria <= 21) {      
       
       round = round + 1;
       player1.elegidas = [];
-      console.log("----Your reward is : $", prize * round);
+      alert("You Won the hand - collect the Rewards Ending the game or Continue playing to add more rewards !")
+      
       if(round == 4){
         alert("Congratulation you won 3 rounds The game will re start")
         window.location.reload();
       }
     }
     
-    boxPrize.innerText = `$ ${prize * round }
-                          More winner rounds accumulate rewards!!"`
+    boxPrize.innerText = `   $    ${prize * round }         `
     choice = "";
+    boxRound.innerText = round 
   }
 
 function endGame() {
-  if (choice == "N") {
-    console.log("Ok, game finished.");
+  if (choice == "N") {    
     out = out + 1;
-    choice = "N";
-    console.log("----Your reward is : $", prize * round);
+    choice = "N";    
     player1.elegidas = []
     alert("Thanks for playing the game will restart");
     window.location.reload();
   }
 }
 
+boxPrize.innerText = `   $    ${prize * round }         `
 
 
 
