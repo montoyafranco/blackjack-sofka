@@ -1,5 +1,6 @@
 Hi , this is a blackjack game made with OOP and javascript vainilla . 
 This is how it works
+first : Npm install     to dowload al the depencencies
 
 
 Deck as an object to filter and manipulete
